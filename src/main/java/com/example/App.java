@@ -7,13 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @EnableAutoConfiguration
 @ComponentScan
@@ -23,36 +19,23 @@ public class App implements CommandLineRunner {
 
     @Override
     public void run(String... strings) {
-        String sql = "SELECT id, first_name, last_name FROM customers WHERE id = :id";
-        SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("id", 2);
-        /**
-         * anonymous class
-        Customer result = jdbcTemplate.queryForObject(sql, param,
-                new RowMapper<Customer>() {
-                    @Override
-                    public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new Customer(rs.getInt("id"),
-                                            rs.getString("first_name"),
-                                            rs.getString("last_name"));
-                    }
-                });
-        */
-
-        /**
-         * ramda expression
-        Customer result = jdbcTemplate.queryForObject(sql, param,
-                (rs, rowNum) -> new Customer(rs.getInt("id"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name")));
-         */
-
         // 데이터 추가
-        Customer created = customerRepository.save(new Customer(null, "Hidetoshi", "Dekisugi"));
-        System.out.println(created + " is created");
+        Customer created1 = customerRepository.save(new Customer(null, "Hidetoshi", "Dekisugi"));
+        Customer created2 = customerRepository.save(new Customer(null, "Kim", "Ji"));
+        Customer created3 = customerRepository.save(new Customer(null, "Park", "Jisong"));
+        Customer created4 = customerRepository.save(new Customer(null, "Wee", "RG"));
+        Customer created5 = customerRepository.save(new Customer(null, "Choi", "Il"));
+        System.out.println(created1 + " is created");
 
-        // 데이터 표시
-        customerRepository.findAll().forEach(System.out::println);
+        // 페이징 처리
+        Pageable pageable = new PageRequest(0, 3);
+        Page<Customer> page = customerRepository.findAllOrderByNameWithPaging(pageable);
+
+        System.out.println("한 페이지당 데이터수=" + page.getSize());
+        System.out.println("현재 페이지=" + page.getNumber());
+        System.out.println("전체 페이지 수=" + page.getTotalPages());
+        System.out.println("전체 데이터 수=" + page.getTotalElements());
+        page.getContent().forEach(System.out::println);
     }
 
     public static void main(String[] args) {
