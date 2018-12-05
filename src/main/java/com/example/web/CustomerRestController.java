@@ -1,4 +1,4 @@
-package com.example.api;
+package com.example.web;
 
 import com.example.domain.Customer;
 import com.example.service.CustomerService;

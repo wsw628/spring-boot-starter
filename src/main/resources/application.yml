@@ -4,3 +4,5 @@ spring:
     url: jdbc:h2:file:/Users/Naver/Documents/workspace_intellij/boot-di/testdb
     username: sa
     password:
+
+spring.thymeleaf.cache: false

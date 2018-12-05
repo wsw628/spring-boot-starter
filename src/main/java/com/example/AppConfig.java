@@ -7,6 +7,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.sql.DataSource;
 
@@ -32,4 +35,18 @@ public class AppConfig {
     DataSource dataSource() {
         return new Log4jdbcProxyDataSource(this.dataSource);
     }
+
+    /**
+     * 아래 filter bean 적용하면 로컬에서 오히려 한글이 깨진다,
+     * 인코딩된 상태인데 다시 인코딩을 해서 그런가? 살펴보면 좋을듯하다.
+     *
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @Bean
+    CharacterEncodingFilter characterEncodingFilter() {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+        return filter;
+    }
+    */
 }
