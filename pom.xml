@@ -67,6 +67,11 @@
       <version>1.16.4</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
