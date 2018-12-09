@@ -7,4 +7,4 @@ spring:
   jpa:
     hibernate.ddl-auto: validate
   thymeleaf.cache: false
-
+  security.basic.enable: false
